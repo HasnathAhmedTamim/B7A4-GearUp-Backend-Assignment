@@ -1,14 +1,13 @@
 model Category {
-  id String @id @default(uuid())
+  id          String   @id @default(uuid())
 
-  name String @unique @db.VarChar(100)
-
+  name        String   @unique @db.VarChar(100)
   description String?
 
-  gears Gear[]
+  gears       Gear[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   @@map("categories")
 }

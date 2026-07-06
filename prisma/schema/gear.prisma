@@ -1,27 +1,24 @@
 model Gear {
-  id String @id @default(uuid())
+  id            String   @id @default(uuid())
 
-  name String @db.VarChar(255)
+  title         String   @db.VarChar(255)
+  description   String
+  brand         String   @db.VarChar(100)
 
-  description String @db.Text
+  image         String
 
-  brand String @db.VarChar(100)
+  pricePerDay   Decimal  @db.Decimal(10,2)
 
-  image String?
+  stock         Int
 
-  pricePerDay Float
+  availability  Boolean  @default(true)
 
-  stock Int @default(1)
-
-  available Boolean @default(true)
-
-  providerId String
+  providerId    String
+  categoryId    String
 
   provider User @relation(fields: [providerId], references: [id], onDelete: Cascade)
 
-  categoryId String
-
-  category Category @relation(fields: [categoryId], references: [id])
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
 
   rentals RentalOrder[]
 
@@ -30,9 +27,5 @@ model Gear {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([providerId])
-
-  @@index([categoryId])
-
-  @@map("gears")
+  @@map("gear_items")
 }

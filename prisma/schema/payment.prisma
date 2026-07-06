@@ -1,19 +1,19 @@
 model Payment {
   id String @id @default(uuid())
 
+  transactionId String? @unique
+
   rentalOrderId String @unique
 
-  rentalOrder RentalOrder @relation(fields: [rentalOrderId], references: [id], onDelete: Cascade)
-
-  transactionId String?
-
-  amount Float
+  amount Decimal @db.Decimal(10,2)
 
   provider PaymentProvider
 
   status PaymentStatus @default(PENDING)
 
   paidAt DateTime?
+
+  rentalOrder RentalOrder @relation(fields: [rentalOrderId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

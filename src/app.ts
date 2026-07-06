@@ -5,6 +5,7 @@ import express from "express";
 import config from "./config";
 import { globalErrorHandler } from "./middlewares/globalErrorHandler";
 import { notFound } from "./middlewares/notFound";
+import { userRoutes } from "./modules/users/user.route";
 
 const app = express();
 
@@ -28,6 +29,8 @@ app.get("/", (req, res) => {
   });
 });
 
+// Routes
+app.use("/api/users", userRoutes);
 
 
 

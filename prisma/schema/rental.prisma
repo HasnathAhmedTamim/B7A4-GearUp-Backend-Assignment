@@ -2,31 +2,25 @@ model RentalOrder {
   id String @id @default(uuid())
 
   customerId String
-
-  customer User @relation(fields: [customerId], references: [id], onDelete: Cascade)
-
   gearId String
 
-  gear Gear @relation(fields: [gearId], references: [id], onDelete: Cascade)
-
   startDate DateTime
-
   endDate DateTime
 
   quantity Int @default(1)
 
-  totalAmount Float
+  totalAmount Decimal @db.Decimal(10,2)
 
   status RentalStatus @default(PLACED)
+
+  customer User @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  gear Gear @relation(fields: [gearId], references: [id], onDelete: Restrict)
 
   payment Payment?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  @@index([customerId])
-
-  @@index([gearId])
 
   @@map("rental_orders")
 }

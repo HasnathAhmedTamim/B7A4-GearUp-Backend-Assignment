@@ -4,13 +4,14 @@ type TMeta = {
   page: number;
   limit: number;
   total: number;
+  totalPages?: number;
 };
 
 type TResponse<T> = {
   success: boolean;
   statusCode: number;
   message: string;
-  data: T;
+  data?: T;
   meta?: TMeta;
 };
 
