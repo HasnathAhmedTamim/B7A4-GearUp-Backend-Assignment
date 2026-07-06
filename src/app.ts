@@ -3,6 +3,8 @@ import cors from "cors";
 import express from "express";
 
 import config from "./config";
+import { globalErrorHandler } from "./middlewares/globalErrorHandler";
+import { notFound } from "./middlewares/notFound";
 
 const app = express();
 
@@ -26,4 +28,15 @@ app.get("/", (req, res) => {
   });
 });
 
+
+
+
+
+
+
+
+
+app.use(notFound);
+
+app.use(globalErrorHandler);
 export default app;
