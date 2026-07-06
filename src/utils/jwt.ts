@@ -1,32 +1,16 @@
-import jwt, { JwtPayload, SignOptions } from "jsonwebtoken";
+import jwt, { Secret, SignOptions } from "jsonwebtoken";
+import { StringValue } from "ms";
 
-const createToken = (
-  payload: JwtPayload,
-  secret: string,
-  expiresIn: SignOptions,
+export const createToken = (
+  payload: object,
+  secret: Secret,
+  expiresIn: StringValue,
 ) => {
   return jwt.sign(payload, secret, {
     expiresIn,
-  } as SignOptions);
+  } satisfies SignOptions);
 };
 
-const verifyToken = (token: string, secret: string) => {
-  try {
-    const decoded = jwt.verify(token, secret);
-
-    return {
-      success: true,
-      data: decoded,
-    };
-  } catch (error: any) {
-    return {
-      success: false,
-      error: error.message,
-    };
-  }
-};
-
-export const jwtUtils = {
-  createToken,
-  verifyToken,
+export const verifyToken = <T>(token: string, secret: Secret) => {
+  return jwt.verify(token, secret) as T;
 };
