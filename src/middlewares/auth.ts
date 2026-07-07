@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import httpStatus from "http-status";
 
+import { Role } from "../../generated/prisma/enums";
+
 import config from "../config";
 import AppError from "../error/AppError";
 import { verifyToken } from "../utils/jwt";
-
-import { Role } from "../../generated/prisma/enums";
 
 export type TJwtPayload = {
   id: string;
@@ -26,12 +26,31 @@ declare global {
 export const auth =
   (...roles: Role[]) =>
   (req: Request, res: Response, next: NextFunction) => {
-    const token = req.headers.authorization?.replace("Bearer ", "");
+    const authHeader = req.headers.authorization;
 
-    if (!token) {
+    if (!authHeader) {
       return next(
         new AppError(httpStatus.UNAUTHORIZED, "You are not authorized."),
       );
+    }
+
+    let token: string;
+
+    if (authHeader.startsWith("Bearer ")) {
+      const parts = authHeader.split(" ");
+
+      if (parts.length !== 2 || !parts[1]) {
+        return next(
+          new AppError(
+            httpStatus.UNAUTHORIZED,
+            "Invalid authorization header.",
+          ),
+        );
+      }
+
+      token = parts[1];
+    } else {
+      token = authHeader;
     }
 
     try {
@@ -39,7 +58,7 @@ export const auth =
 
       req.user = decoded;
 
-      if (roles.length && !roles.includes(decoded.role)) {
+      if (roles.length > 0 && !roles.includes(decoded.role)) {
         return next(
           new AppError(
             httpStatus.FORBIDDEN,
@@ -49,7 +68,7 @@ export const auth =
       }
 
       next();
-    } catch {
+    } catch (error) {
       next(new AppError(httpStatus.UNAUTHORIZED, "Invalid or expired token."));
     }
   };

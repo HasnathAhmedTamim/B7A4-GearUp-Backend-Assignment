@@ -9,6 +9,10 @@ import { userRoutes } from "./modules/users/user.route";
 import { authRoutes } from "./modules/auth/auth.route";
 import { categoryRoutes } from "./modules/category/category.route";
 import { gearRoutes } from "./modules/gear/gear.route";
+import { rentalRoutes } from "./modules/rental/rental.route";
+import { paymentRoutes } from "./modules/payment/payment.route";
+import { paymentController } from "./modules/payment/payment.controller";
+
 
 const app = express();
 
@@ -18,6 +22,13 @@ app.use(
     credentials: true,
   }),
 );
+
+app.post(
+  "/api/payments/webhook",
+  express.raw({ type: "application/json" }),
+  paymentController.stripeWebhook,
+);
+
 
 app.use(express.json());
 
@@ -37,7 +48,8 @@ app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/gear", gearRoutes);
-
+app.use("/api/rentals", rentalRoutes);
+app.use("/api/payments", paymentRoutes);
 
 
 

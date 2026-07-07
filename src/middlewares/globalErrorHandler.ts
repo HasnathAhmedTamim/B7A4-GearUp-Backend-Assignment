@@ -8,6 +8,7 @@ export const globalErrorHandler: ErrorRequestHandler = (
   res,
   next,
 ) => {
+  // console.error(err);
   let statusCode = 500;
   let message = "Something went wrong";
   let errorDetails: unknown = err;
