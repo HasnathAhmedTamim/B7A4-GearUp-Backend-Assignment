@@ -29,6 +29,55 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getMe = catchAsync(async (req, res) => {
+  const result = await authService.getMe(req.user.id);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Profile retrieved successfully",
+    data: result,
+  });
+});
+
+const refreshToken = catchAsync(async (req, res) => {
+  const token = req.cookies.refreshToken;
+
+  const accessToken = await authService.refreshToken(token);
+
+  res.cookie("accessToken", accessToken, {
+    httpOnly: true,
+    secure: false,
+    sameSite: "lax",
+  });
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Access token generated successfully",
+    data: {
+      accessToken,
+    },
+  });
+});
+
+const logout = catchAsync(async (req, res) => {
+  res.clearCookie("accessToken");
+
+  res.clearCookie("refreshToken");
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Logout successful",
+    data: null,
+  });
+});
+
+
 export const authController = {
   loginUser,
+  getMe,
+  refreshToken,
+  logout,
 };

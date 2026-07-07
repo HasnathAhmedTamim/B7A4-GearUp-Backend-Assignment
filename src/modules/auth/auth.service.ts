@@ -1,14 +1,17 @@
 import bcrypt from "bcryptjs";
 import httpStatus from "http-status";
-import { StringValue } from "ms";
 
 
-import config from "../../config";
+
+
 import { prisma } from "../../lib/prisma";
-import { createToken } from "../../utils/jwt";
 
 import { ILoginUser } from "./auth.interface";
 import AppError from "../../error/AppError";
+
+import config from "../../config";
+import { verifyToken, createToken } from "../../utils/jwt";
+import { StringValue } from "ms";
 
 const loginUser = async (payload: ILoginUser) => {
   const { email, password } = payload;
@@ -60,6 +63,59 @@ const loginUser = async (payload: ILoginUser) => {
   };
 };
 
+const getMe = async (userId: string) => {
+  const user = await prisma.user.findUniqueOrThrow({
+    where: {
+      id: userId,
+    },
+
+    omit: {
+      password: true,
+    },
+
+    include: {
+      profile: true,
+    },
+  });
+
+  return user;
+};
+
+const refreshToken = async (token: string) => {
+  const decoded = verifyToken<{
+    id: string;
+    email: string;
+    role: string;
+  }>(token, config.jwtRefreshSecret);
+
+  const user = await prisma.user.findUniqueOrThrow({
+    where: {
+      id: decoded.id,
+    },
+  });
+
+  if (user.status === "SUSPENDED") {
+    throw new AppError(
+      httpStatus.FORBIDDEN,
+      "Your account has been suspended.",
+    );
+  }
+
+  const accessToken = createToken(
+    {
+      id: user.id,
+      email: user.email,
+      role: user.role,
+    },
+    config.jwtAccessSecret,
+    config.jwtAccessExpiresIn as StringValue,
+  );
+
+  return accessToken;
+};
+
 export const authService = {
   loginUser,
+  getMe,
+  refreshToken,
 };
