@@ -161,8 +161,58 @@ const handleStripeWebhook = async (signature: string, payload: Buffer) => {
    });
  });
 };
+const getMyPayments = async (customerId: string) => {
+  return prisma.payment.findMany({
+    where: {
+      rentalOrder: {
+        customerId,
+      },
+    },
 
+    include: {
+      rentalOrder: {
+        include: {
+          gear: true,
+        },
+      },
+    },
+
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+};
+const getSinglePayment = async (paymentId: string, customerId: string) => {
+  const payment = await prisma.payment.findUnique({
+    where: {
+      id: paymentId,
+    },
+
+    include: {
+      rentalOrder: {
+        include: {
+          gear: true,
+        },
+      },
+    },
+  });
+
+  if (!payment) {
+    throw new AppError(httpStatus.NOT_FOUND, "Payment not found.");
+  }
+
+  if (payment.rentalOrder.customerId !== customerId) {
+    throw new AppError(
+      httpStatus.FORBIDDEN,
+      "You are forbidden to access this payment.",
+    );
+  }
+
+  return payment;
+};
 export const paymentService = {
   createCheckoutSession,
   handleStripeWebhook,
+  getMyPayments,
+  getSinglePayment,
 };
