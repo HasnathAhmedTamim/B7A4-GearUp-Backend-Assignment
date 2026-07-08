@@ -8,9 +8,10 @@ A role-based backend API for a sports and outdoor equipment rental platform wher
 
 # 🔗 Live Links
 
-* **Backend API:** https://b7a4-gearup-backend-assignment.onrender.com
-* **API Documentation:** https://documenter.getpostman.com/view/your-id/your-doc-id
-* **GitHub Repository:** https://github.com/HasnathAhmedTamim/B7A4-GearUp-Backend-Assignment
+- **Backend API:** https://b7a4-gearup-backend-assignment.onrender.com
+- **API Documentation:** https://documenter.getpostman.com/view/31892953/2sBY4Jxid1
+- **Postman Collection** : https://github.com/HasnathAhmedTamim/B7A4-GearUp-Backend-Assignment/blob/main/GearUp%20Backend%20API.postman_collection.json
+- **GitHub Repository:** https://github.com/HasnathAhmedTamim/B7A4-GearUp-Backend-Assignment
 
 ---
 
@@ -20,19 +21,19 @@ A role-based backend API for a sports and outdoor equipment rental platform wher
 
 Email: [admin@gmail.com](mailto:admin@gmail.com)
 
-Password: ********
+Password: **\*\*\*\***
 
 ## Provider
 
 Email: [provider@gmail.com](mailto:provider@gmail.com)
 
-Password: ********
+Password: **\*\*\*\***
 
 ## Customer
 
 Email: [customer@gmail.com](mailto:customer@gmail.com)
 
-Password: ********
+Password: **\*\*\*\***
 
 ---
 
@@ -40,9 +41,9 @@ Password: ********
 
 GearUp is a Sports and Outdoor Equipment Rental Platform where:
 
-* Customers can browse and rent sports gear.
-* Providers can manage their gear inventory and rental orders.
-* Admins can monitor users, rentals, and categories.
+- Customers can browse and rent sports gear.
+- Providers can manage their gear inventory and rental orders.
+- Admins can monitor users, rentals, and categories.
 
 ---
 
@@ -50,34 +51,34 @@ GearUp is a Sports and Outdoor Equipment Rental Platform where:
 
 ## Public Features
 
-* Browse all available gear
-* Search and filter gear
-* Pagination support
-* View gear details
+- Browse all available gear
+- Search and filter gear
+- Pagination support
+- View gear details
 
 ## Customer Features
 
-* Register and login
-* Place rental orders
-* Pay using Stripe
-* View payment history
-* Track rental status
-* Leave reviews
+- Register and login
+- Place rental orders
+- Pay using Stripe
+- View payment history
+- Track rental status
+- Leave reviews
 
 ## Provider Features
 
-* Add, update, and delete gear
-* Manage inventory
-* View rental orders
-* Update rental status
+- Add, update, and delete gear
+- Manage inventory
+- View rental orders
+- Update rental status
 
 ## Admin Features
 
-* Manage users
-* Suspend or activate users
-* Manage categories
-* Monitor all rentals and gear
-* View dashboard statistics
+- Manage users
+- Suspend or activate users
+- Manage categories
+- Monitor all rentals and gear
+- View dashboard statistics
 
 ---
 
@@ -85,32 +86,32 @@ GearUp is a Sports and Outdoor Equipment Rental Platform where:
 
 ## Backend
 
-* Node.js
-* Express.js
-* TypeScript
+- Node.js
+- Express.js
+- TypeScript
 
 ## Database
 
-* PostgreSQL
-* Prisma ORM
+- PostgreSQL
+- Prisma ORM
 
 ## Authentication
 
-* JWT
-* HTTP-only Cookies
+- JWT
+- HTTP-only Cookies
 
 ## Validation
 
-* Zod
+- Zod
 
 ## Payment
 
-* Stripe Checkout
-* Stripe Webhook
+- Stripe Checkout
+- Stripe Webhook
 
 ## Deployment
 
-* Render
+- Render
 
 ---
 
@@ -205,16 +206,16 @@ npm start
 
 Authentication uses:
 
-* JWT Access Token
-* JWT Refresh Token
-* HTTP-only Cookies
-* Role-based Authorization
+- JWT Access Token
+- JWT Refresh Token
+- HTTP-only Cookies
+- Role-based Authorization
 
 Roles:
 
-* CUSTOMER
-* PROVIDER
-* ADMIN
+- CUSTOMER
+- PROVIDER
+- ADMIN
 
 ---
 
@@ -313,12 +314,12 @@ stripe listen --forward-to localhost:5000/api/payments/webhook
 
 # 📊 Database Models
 
-* User
-* Category
-* Gear
-* Rental
-* Payment
-* Review
+- User
+- Category
+- Gear
+- Rental
+- Payment
+- Review
 
 ---
 
@@ -334,17 +335,6 @@ stripe listen --forward-to localhost:5000/api/payments/webhook
 }
 ```
 
----
-
-# 📹 Submission
-
-* Backend Repository
-* Live API URL
-* Postman Documentation
-* Demo Video
-* Admin Credentials
-
----
 
 # 👨‍💻 Author
 
@@ -352,4 +342,3 @@ Hasnath Ahmed Tamim
 
 Email: [hasnath.tamim333@gmail.com](mailto:hasnath.tamim333@gmail.com)
 
-LinkedIn: https://www.linkedin.com/in/hasnath-ahmed-tamim/
