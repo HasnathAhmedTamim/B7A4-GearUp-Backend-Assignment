@@ -26,6 +26,8 @@ declare global {
 export const auth =
   (...roles: Role[]) =>
   (req: Request, res: Response, next: NextFunction) => {
+        console.log("Cookies:", req.cookies);
+        console.log("Access Token:", req.cookies?.accessToken);
     // const authHeader = req.headers.authorization;
 
     // if (!authHeader) {
