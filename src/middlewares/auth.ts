@@ -26,31 +26,46 @@ declare global {
 export const auth =
   (...roles: Role[]) =>
   (req: Request, res: Response, next: NextFunction) => {
-    const authHeader = req.headers.authorization;
+    // const authHeader = req.headers.authorization;
 
-    if (!authHeader) {
+    // if (!authHeader) {
+    //   return next(
+    //     new AppError(httpStatus.UNAUTHORIZED, "You are not authorized."),
+    //   );
+    // }
+
+    // let token: string;
+
+    // if (authHeader.startsWith("Bearer ")) {
+    //   const parts = authHeader.split(" ");
+
+    //   if (parts.length !== 2 || !parts[1]) {
+    //     return next(
+    //       new AppError(
+    //         httpStatus.UNAUTHORIZED,
+    //         "Invalid authorization header.",
+    //       ),
+    //     );
+    //   }
+
+    //   token = parts[1];
+    // } else {
+    //   token = authHeader;
+    // }
+    let token = req.cookies?.accessToken;
+
+    if (!token) {
+      const authHeader = req.headers.authorization;
+
+      if (authHeader?.startsWith("Bearer ")) {
+        token = authHeader.split(" ")[1];
+      }
+    }
+
+    if (!token) {
       return next(
         new AppError(httpStatus.UNAUTHORIZED, "You are not authorized."),
       );
-    }
-
-    let token: string;
-
-    if (authHeader.startsWith("Bearer ")) {
-      const parts = authHeader.split(" ");
-
-      if (parts.length !== 2 || !parts[1]) {
-        return next(
-          new AppError(
-            httpStatus.UNAUTHORIZED,
-            "Invalid authorization header.",
-          ),
-        );
-      }
-
-      token = parts[1];
-    } else {
-      token = authHeader;
     }
 
     try {

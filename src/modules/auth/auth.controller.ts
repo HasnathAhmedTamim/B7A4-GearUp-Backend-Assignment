@@ -3,23 +3,20 @@ import httpStatus from "http-status";
 
 import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
-
 import { authService } from "./auth.service";
+
+const cookieOptions = {
+  httpOnly: true,
+  secure: true,
+  sameSite: "none" as const,
+};
 
 const loginUser = catchAsync(async (req: Request, res: Response) => {
   const result = await authService.loginUser(req.body);
 
-  res.cookie("accessToken", result.accessToken, {
-    httpOnly: true,
-    secure: false,
-    sameSite: "lax",
-  });
+  res.cookie("accessToken", result.accessToken, cookieOptions);
 
-  res.cookie("refreshToken", result.refreshToken, {
-    httpOnly: true,
-    secure: false,
-    sameSite: "lax",
-  });
+  res.cookie("refreshToken", result.refreshToken, cookieOptions);
 
   sendResponse(res, {
     success: true,
@@ -45,11 +42,7 @@ const refreshToken = catchAsync(async (req, res) => {
 
   const accessToken = await authService.refreshToken(token);
 
-  res.cookie("accessToken", accessToken, {
-    httpOnly: true,
-    secure: false,
-    sameSite: "lax",
-  });
+  res.cookie("accessToken", accessToken, cookieOptions);
 
   sendResponse(res, {
     success: true,
@@ -62,9 +55,8 @@ const refreshToken = catchAsync(async (req, res) => {
 });
 
 const logout = catchAsync(async (req, res) => {
-  res.clearCookie("accessToken");
-
-  res.clearCookie("refreshToken");
+  res.clearCookie("accessToken", cookieOptions);
+  res.clearCookie("refreshToken", cookieOptions);
 
   sendResponse(res, {
     success: true,
@@ -73,7 +65,6 @@ const logout = catchAsync(async (req, res) => {
     data: null,
   });
 });
-
 
 export const authController = {
   loginUser,
