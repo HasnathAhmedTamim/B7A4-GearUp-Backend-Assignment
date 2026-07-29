@@ -9,14 +9,14 @@ const cookieOptions = {
   httpOnly: true,
   secure: true,
   sameSite: "none" as const,
+  path: "/",
 };
 
 const loginUser = catchAsync(async (req: Request, res: Response) => {
   const result = await authService.loginUser(req.body);
 
   res.cookie("accessToken", result.accessToken, cookieOptions);
-
-  res.cookie("refreshToken", result.refreshToken, cookieOptions);
+  res.cookie("refreshToken", result.refreshToken, cookieOptions);;
 
   sendResponse(res, {
     success: true,
