@@ -9,3 +9,10 @@ export interface IRegisterUser {
   address?: string;
   bio?: string;
 }
+export interface IUpdateProfile {
+  name?: string;
+  photo?: string;
+  phone?: string;
+  address?: string;
+  bio?: string;
+}

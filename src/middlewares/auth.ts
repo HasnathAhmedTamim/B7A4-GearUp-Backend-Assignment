@@ -70,22 +70,37 @@ export const auth =
       );
     }
 
+    // try {
+    //   const decoded = verifyToken<TJwtPayload>(token, config.jwtAccessSecret);
+
+    //   req.user = decoded;
+
+    //   if (roles.length > 0 && !roles.includes(decoded.role)) {
+    //     return next(
+    //       new AppError(
+    //         httpStatus.FORBIDDEN,
+    //         "You are forbidden to access this resource.",
+    //       ),
+    //     );
+    //   }
+
+    //   next();
+    // } catch (error) {
+    //   next(new AppError(httpStatus.UNAUTHORIZED, "Invalid or expired token."));
+    // }
     try {
+      console.log("JWT Secret:", config.jwtAccessSecret);
+
       const decoded = verifyToken<TJwtPayload>(token, config.jwtAccessSecret);
+
+      console.log("Decoded:", decoded);
 
       req.user = decoded;
 
-      if (roles.length > 0 && !roles.includes(decoded.role)) {
-        return next(
-          new AppError(
-            httpStatus.FORBIDDEN,
-            "You are forbidden to access this resource.",
-          ),
-        );
-      }
-
       next();
     } catch (error) {
+      console.log("JWT Verify Error:", error);
+
       next(new AppError(httpStatus.UNAUTHORIZED, "Invalid or expired token."));
     }
   };

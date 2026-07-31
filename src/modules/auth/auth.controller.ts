@@ -26,8 +26,22 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const getMe = catchAsync(async (req, res) => {
+// const getMe = catchAsync(async (req, res) => {
+//   const result = await authService.getMe(req.user.id);
+
+//   sendResponse(res, {
+//     success: true,
+//     statusCode: httpStatus.OK,
+//     message: "Profile retrieved successfully",
+//     data: result,
+//   });
+// });
+const getMe = catchAsync(async (req: Request, res: Response) => {
+  console.log("REQ USER:", req.user);
+
   const result = await authService.getMe(req.user.id);
+
+  console.log("DB USER:", result);
 
   sendResponse(res, {
     success: true,

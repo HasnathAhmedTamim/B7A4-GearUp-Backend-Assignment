@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import config from "../../config";
 import { prisma } from "../../lib/prisma";
-import { IRegisterUser } from "./user.interface";
+import { IRegisterUser, IUpdateProfile } from "./user.interface";
 import AppError from "../../error/AppError";
 import httpStatus from "http-status";
 
@@ -69,7 +69,89 @@ const registerUserIntoDB = async (payload: IRegisterUser) => {
 
   return user;
 };
+const updateProfile = async (userId: string, payload: IUpdateProfile) => {
+  const { name, photo, phone, address, bio } = payload;
 
+  const result = await prisma.$transaction(async (tx) => {
+    // Update User table
+    if (name) {
+      await tx.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          name,
+        },
+      });
+    }
+
+    // Update Profile table
+    await tx.profile.upsert({
+      where: {
+        userId,
+      },
+
+      update: {
+        ...(photo !== undefined && {
+          photo,
+        }),
+
+        ...(phone !== undefined && {
+          phone,
+        }),
+
+        ...(address !== undefined && {
+          address,
+        }),
+
+        ...(bio !== undefined && {
+          bio,
+        }),
+      },
+
+      create: {
+        userId,
+
+        ...(photo !== undefined && {
+          photo,
+        }),
+
+        ...(phone !== undefined && {
+          phone,
+        }),
+
+        ...(address !== undefined && {
+          address,
+        }),
+
+        ...(bio !== undefined && {
+          bio,
+        }),
+      },
+
+      include: {
+        user: true,
+      },
+    });
+
+    return tx.user.findUniqueOrThrow({
+      where: {
+        id: userId,
+      },
+
+      omit: {
+        password: true,
+      },
+
+      include: {
+        profile: true,
+      },
+    });
+  });
+
+  return result;
+};
 export const userService = {
   registerUserIntoDB,
+  updateProfile,
 };
