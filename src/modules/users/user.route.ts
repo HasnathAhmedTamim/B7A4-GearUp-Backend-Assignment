@@ -17,5 +17,6 @@ router.patch(
   auth(Role.CUSTOMER, Role.PROVIDER, Role.ADMIN),
   userController.updateProfile,
 );
+router.patch("/:id/status", auth(Role.ADMIN), userController.updateUserStatus);
 
 export const userRoutes = router;

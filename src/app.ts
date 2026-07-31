@@ -14,6 +14,7 @@ import { paymentRoutes } from "./modules/payment/payment.route";
 import { paymentController } from "./modules/payment/payment.controller";
 import { reviewRoutes } from "./modules/review/review.route";
 import { adminRoutes } from "./modules/admin/admin.route";
+import { dashboardRoutes } from "./modules/dashboard/dashboard.route";
 const app = express();
 
 app.use(
@@ -52,7 +53,7 @@ app.use("/api/rentals", rentalRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/admin", adminRoutes);
-
+app.use("/api/dashboard", dashboardRoutes);
 
 
 

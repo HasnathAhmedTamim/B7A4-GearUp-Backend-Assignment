@@ -4,6 +4,7 @@ import { prisma } from "../../lib/prisma";
 import { IRegisterUser, IUpdateProfile } from "./user.interface";
 import AppError from "../../error/AppError";
 import httpStatus from "http-status";
+import { Role } from "../../../generated/prisma/client";
 
 const registerUserIntoDB = async (payload: IRegisterUser) => {
   const { name, email, password, role, photo, phone, address, bio } = payload;
@@ -151,7 +152,46 @@ const updateProfile = async (userId: string, payload: IUpdateProfile) => {
 
   return result;
 };
+
+const updateUserStatus = async (
+  userId: string,
+  status: "ACTIVE" | "SUSPENDED",
+) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+  });
+
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, "User not found");
+  }
+
+  if (user.role === Role.ADMIN) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "Admin account cannot be blocked",
+    );
+  }
+
+  const result = await prisma.user.update({
+    where: {
+      id: userId,
+    },
+
+    data: {
+      status,
+    },
+
+    omit: {
+      password: true,
+    },
+  });
+
+  return result;
+};
 export const userService = {
   registerUserIntoDB,
   updateProfile,
+  updateUserStatus,
 };
