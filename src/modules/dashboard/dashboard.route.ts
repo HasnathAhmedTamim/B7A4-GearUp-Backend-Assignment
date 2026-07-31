@@ -13,4 +13,10 @@ router.get(
   dashboardController.getProviderDashboard,
 );
 
+router.get("/admin", auth(Role.ADMIN), dashboardController.getAdminDashboard);
+router.get(
+  "/admin/recent-rentals",
+  auth(Role.ADMIN),
+  dashboardController.getRecentRentals,
+);
 export const dashboardRoutes = router;
