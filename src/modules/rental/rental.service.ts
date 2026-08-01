@@ -82,7 +82,7 @@ const createRental = async (customerId: string, payload: IRental) => {
   });
 };
 const getMyRentals = async (customerId: string) => {
-  const result = await prisma.rentalOrder.findMany({
+  const rentals = await prisma.rentalOrder.findMany({
     where: {
       customerId,
     },
@@ -101,6 +101,26 @@ const getMyRentals = async (customerId: string) => {
       createdAt: "desc",
     },
   });
+
+  const result = await Promise.all(
+    rentals.map(async (rental) => {
+      const review = await prisma.review.findFirst({
+        where: {
+          customerId,
+          gearId: rental.gearId,
+        },
+
+        select: {
+          id: true,
+        },
+      });
+
+      return {
+        ...rental,
+        reviewed: !!review,
+      };
+    }),
+  );
 
   return result;
 };
